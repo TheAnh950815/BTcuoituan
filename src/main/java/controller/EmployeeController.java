@@ -1,0 +1,66 @@
+package controller;
+
+import model.Employee;
+import model.EmployeeForm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import service.EmployeeImpl;
+import service.IEmployee;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+
+@Configuration
+@EnableWebMvc
+@RequestMapping("/")
+@ComponentScan("controller")
+public class EmployeeController {
+    private final IEmployee iEmployee = new EmployeeImpl();
+
+
+    @GetMapping("")
+    public String index(Model model) {
+        List<Employee> employees = iEmployee.findAll();
+        model.addAttribute("employees", employees);
+        return "/view";
+    }
+    @GetMapping("/create")
+    public ModelAndView showCreateForm() {
+        ModelAndView modelAndView = new ModelAndView("/create");
+        modelAndView.addObject("employeeForm", new EmployeeForm());
+        return modelAndView;
+    }
+    @Value("${file-upload}")
+    private String fileUpload;
+    @PostMapping("/save")
+    public ModelAndView saveProduct(@ModelAttribute EmployeeForm employeeForm) {
+        MultipartFile multipartFile = employeeForm.getAvatar();
+        String fileName = multipartFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(employeeForm.getAvatar().getBytes(), new File(fileUpload + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+       Employee employee = new Employee(employeeForm.getId(), employeeForm.getName(),
+                employeeForm.getDate(), fileName,employeeForm.isGender());
+        iEmployee.save(employee);
+        ModelAndView modelAndView = new ModelAndView("/create");
+        modelAndView.addObject("employeeForm", employeeForm);
+        modelAndView.addObject("message", "Created new employee successfully !");
+        return modelAndView;
+    }
+}
