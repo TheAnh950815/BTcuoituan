@@ -16,6 +16,8 @@
         <th>Date</th>
         <th>Gender</th>
         <th>Avatar</th>
+        <th>Edit</th>
+        <th>Delete</th>
 
     </tr>
     </thead>
@@ -25,6 +27,8 @@
         <td th:text="${employee.date}"></td>
         <td th:text="${employee.gender}"></td>
         <td><img width="100" height="100" th:src="@{${employee.avatar}}" alt=""></td>
+        <td><a th:href="@{/edit/{id}(id=${employee.getId()})}">Edit</a> </td>
+        <td><a th:href="@{/delete/{id}(id=${employee.getId()})}">Delete</a></td>
     </tr>
     </tbody>
 </table>

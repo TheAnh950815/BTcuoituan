@@ -22,7 +22,9 @@
         </div>
         <div>
             <label>Gender</label>
-            <input type="text" th:field="*{gender}"/>
+            <select th:field="*{gender}">
+                <option value="true">Nam</option>
+                <option value="false">Nữ</option>
         </div>
         <div>
             <label>Avatar</label>

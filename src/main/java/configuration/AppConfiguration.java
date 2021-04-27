@@ -16,6 +16,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import service.EmployeeImpl;
 
 import java.io.IOException;
 
@@ -73,5 +74,9 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setMaxUploadSizePerFile(52428800);
         return resolver;
+    }
+    @Bean
+    EmployeeImpl hibernateCommentService (){
+        return  new EmployeeImpl();
     }
 }

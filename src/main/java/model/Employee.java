@@ -1,6 +1,12 @@
 package model;
 
+import javax.persistence.*;
+
+@Entity
+@Table
 public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private String date;
