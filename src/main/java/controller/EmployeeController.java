@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.List;
 
 
-
 @RequestMapping("/")
 @Controller
 public class EmployeeController {
@@ -70,20 +69,23 @@ public class EmployeeController {
         return modelAndView;
     }
 
-    @PostMapping("/editCustomer")
-    public String editCustomer(@ModelAttribute("editForm") EmployeeForm employee, Model model) {
+    @PostMapping("/edit")
+    public String editCustomer(@ModelAttribute("editForm") EmployeeForm employeeForm, Model model) {
 //        if (employee.getName() == null || employee.getName().trim().equals("") && employee.getDate().trim().equals("")) {
 //            model.addAttribute("status", "invalid  try again");
 //            return "/edit";
 //        }
-
-//        iEmployee.update(employee);
+        MultipartFile multipartFile = employeeForm.getAvatar();
+        String fileName = multipartFile.getOriginalFilename();
+        Employee employee = new Employee(employeeForm.getId(), employeeForm.getName(),
+                employeeForm.getDate(), fileName, employeeForm.isGender());
+        iEmployee.update(employee);
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteEmployee(@PathVariable long id) {
-       iEmployee.delete(id);
+        iEmployee.delete(id);
         return "redirect:/";
     }
 }

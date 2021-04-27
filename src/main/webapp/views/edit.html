@@ -9,7 +9,7 @@
     </a>
 </p>
 <div id="form">
-    <form th:action="@{/editCustomer}" th:object="${editForm}"
+    <form th:action="@{/edit}" th:object="${editForm}"
           method="post" novalidate="novalidate" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}"/>
         <div>
